@@ -1,0 +1,120 @@
+import { Component } from "react"
+import Welcome from "./Components/Welcome/index.js"
+const initialuserDDetailsList = [
+    {
+        uniqueNo: "1",
+        imageUrl: 'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+        name: "Sai",
+        role: "Software developer"
+    },
+    {
+        uniqueNo: "2",
+        imageUrl: 'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+        name: "Dhanunjai",
+        role: "Software developer"
+    },
+    {
+        uniqueNo: "3",
+        imageUrl: 'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+        name: "Vamshi",
+        role: "Software developer"
+    },
+    {
+        uniqueNo: "4",
+        imageUrl: 'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+        name: "Harish",
+        role: "Software developer"
+    },
+    {
+        uniqueNo: "5",
+        imageUrl: 'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+        name: "Shiva",
+        role: "Software developer"
+    },
+    {
+        uniqueNo: "6",
+        imageUrl: 'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+        name: "Surya",
+        role: "Software developer"
+    }
+
+]
+
+
+class App extends Component {
+    state = {
+        searchInput : "",
+        userDDetailsList : initialuserDDetailsList,
+    }
+
+    onChangeInputSearch = event => {
+            this.setState({searchInput:event.target.value})
+    }
+    deleteUser = uniqueNo => {
+        const {userDDetailsList} = this.state
+        const filteredUserData = userDDetailsList.filter (
+            each => each.uniqueNo !== uniqueNo
+        )
+        this.setState({
+            userDDetailsList:filteredUserData
+        })
+    }
+    render() {
+        const {searchInput,userDDetailsList} = this.state
+        console.log(searchInput)
+        const searchResults = userDDetailsList.filter(eachitem => 
+            eachitem.name.includes(searchInput),
+        )
+        return (
+            <div>
+                <h1>User List</h1>
+                <input type="search" 
+                onChange={this.onChangeInputSearch}
+                value={searchInput}
+                />
+                <ul>
+                    {searchResults.map((eachitem) => (
+                        <Welcome userDetails={eachitem} key={eachitem.uniqueNo} deleteUser={this.deleteUser}/>
+                    ))}
+                </ul>
+            </div>
+        )
+    }
+}
+
+
+export default App
+
+
+
+// start to index.js
+
+
+import "./index.css"
+
+const Welcome = (props) => {
+    const {userDetails,deleteUser} = props
+    const {imageUrl,name,role,uniqueNo} = userDetails
+    const onDelete = () => {
+        deleteUser(uniqueNo)
+    }
+    return(
+        <li className="user-card-container">
+            <img src = {imageUrl} className="avatar"/>
+            <div className="user-details-container">
+                <h1 className="user-name">{name}</h1>
+                <p className="user-designation">{role}</p>
+                
+            </div>
+            <button onClick={onDelete}>
+            <img
+            src="https://assets.ccbp.in/frontend/react-js/cross-img.png"
+            alt="cross"
+            className="delete-img"
+            />
+            </button>
+        </li>
+    )
+}
+
+export default Welcome
